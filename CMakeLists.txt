@@ -1,6 +1,7 @@
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.25)
 
 include(ExternalProject)
+include(FetchContent)
 
 cmake_policy(SET CMP0091 NEW)
 cmake_policy(SET CMP0042 NEW)
@@ -29,35 +30,35 @@ if(APPLE)
 endif()
 
 ExternalProject_Add(jq
-  URL               https://github.com/jqlang/jq/releases/download/jq-1.6/jq-1.6.zip
-  URL_HASH          SHA1=2a49855ef4997fcebd10487b06d16fe34c2abae0
-  DOWNLOAD_EXTRACT_TIMESTAMP 1
+  URL https://github.com/jqlang/jq/releases/download/jq-1.6/jq-1.6.zip
+  URL_HASH SHA1=2a49855ef4997fcebd10487b06d16fe34c2abae0
+  DOWNLOAD_EXTRACT_TIMESTAMP TRUE
 
   CONFIGURE_COMMAND autoreconf -fi
             COMMAND ${CMAKE_COMMAND} -E env CPPFLAGS=${jq_CPPFLAGS} ./configure
                       --with-oniguruma=builtin
                       --disable-maintainer-mode
                       --prefix=<INSTALL_DIR>
-  BUILD_COMMAND     make -j8
-  INSTALL_COMMAND   make install
-  BUILD_IN_SOURCE   1
+  BUILD_COMMAND make -j8
+  INSTALL_COMMAND make install
+  BUILD_IN_SOURCE TRUE
 )
 add_dependencies(${PROJECT_NAME} jq)
 ExternalProject_Get_Property(jq INSTALL_DIR)
 set(jq_PREFIX ${INSTALL_DIR})
 file(MAKE_DIRECTORY ${jq_PREFIX}/include)
 
-add_library(libjq SHARED IMPORTED)
-set_target_properties(libjq PROPERTIES
-  IMPORTED_LOCATION ${jq_PREFIX}/lib/libjq${CMAKE_SHARED_LIBRARY_SUFFIX}
+add_library(jq::libjq STATIC IMPORTED)
+set_target_properties(jq::libjq PROPERTIES
+  IMPORTED_LOCATION ${jq_PREFIX}/lib/libjq${CMAKE_STATIC_LIBRARY_SUFFIX}
   INTERFACE_INCLUDE_DIRECTORIES ${jq_PREFIX}/include)
-target_link_libraries(${PROJECT_NAME} libjq)
+target_link_libraries(${PROJECT_NAME} PRIVATE jq::libjq)
 
-add_library(libonig SHARED IMPORTED)
-set_target_properties(libonig PROPERTIES
-  IMPORTED_LOCATION ${jq_PREFIX}/lib/libonig${CMAKE_SHARED_LIBRARY_SUFFIX}
+add_library(jq::libonig STATIC IMPORTED)
+set_target_properties(jq::libonig PROPERTIES
+  IMPORTED_LOCATION ${jq_PREFIX}/lib/libonig${CMAKE_STATIC_LIBRARY_SUFFIX}
   INTERFACE_INCLUDE_DIRECTORIES ${jq_PREFIX}/include)
-target_link_libraries(${PROJECT_NAME} libonig)
+target_link_libraries(${PROJECT_NAME} PRIVATE jq::libonig)
 
 if(MSVC AND CMAKE_JS_NODELIB_DEF AND CMAKE_JS_NODELIB_TARGET)
   # Generate node.lib

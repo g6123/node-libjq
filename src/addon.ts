@@ -1,5 +1,10 @@
 import bindings from 'bindings';
+import { inspect } from 'node:util';
 
 const jq = bindings('node-libjq');
 
-console.debug(jq.run('.', JSON.stringify({ a: 1 })));
+try {
+  console.log(inspect(jq.run('entries[]', { a: 2, b: 'c' })));
+} catch (error) {
+  console.error(inspect(error));
+}
