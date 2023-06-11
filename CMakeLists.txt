@@ -34,8 +34,10 @@ ExternalProject_Add(jq
   DOWNLOAD_EXTRACT_TIMESTAMP 1
 
   CONFIGURE_COMMAND autoreconf -fi
-            COMMAND ${CMAKE_COMMAND} -E env CPPFLAGS=${jq_CPPFLAGS}
-                      ./configure --with-oniguruma=builtin --disable-maintainer-mode --prefix=<INSTALL_DIR>
+            COMMAND ${CMAKE_COMMAND} -E env CPPFLAGS=${jq_CPPFLAGS} ./configure
+                      --with-oniguruma=builtin
+                      --disable-maintainer-mode
+                      --prefix=<INSTALL_DIR>
   BUILD_COMMAND     make -j8
   INSTALL_COMMAND   make install
   BUILD_IN_SOURCE   1
