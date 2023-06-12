@@ -7,7 +7,11 @@ cmake_policy(SET CMP0091 NEW)
 cmake_policy(SET CMP0042 NEW)
 
 set(CMAKE_CXX_STANDARD 17)
-add_definitions(-DNAPI_VERSION=4)
+
+if(NOT napi_build_version)
+  set(napi_build_version 4)
+endif()
+add_compile_definitions(NAPI_VERSION=${napi_build_version})
 
 project (node-libjq)
 
@@ -41,8 +45,7 @@ ExternalProject_Add(jq
                       --prefix=<INSTALL_DIR>
   BUILD_COMMAND make -j8
   INSTALL_COMMAND make install
-  BUILD_IN_SOURCE TRUE
-)
+  BUILD_IN_SOURCE TRUE)
 add_dependencies(${PROJECT_NAME} jq)
 ExternalProject_Get_Property(jq INSTALL_DIR)
 set(jq_PREFIX ${INSTALL_DIR})
@@ -63,8 +66,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE jq::libonig)
 FetchContent_Declare(Boost
   URL https://boostorg.jfrog.io/artifactory/main/release/1.82.0/source/boost_1_82_0.tar.gz
   URL_HASH SHA256=66a469b6e608a51f8347236f4912e27dc5c60c60d7d53ae9bfe4683316c6f04c
-  DOWNLOAD_EXTRACT_TIMESTAMP TRUE
-)
+  DOWNLOAD_EXTRACT_TIMESTAMP TRUE)
 FetchContent_GetProperties(Boost)
 if(NOT Boost_POPULATED)
   FetchContent_Populate(Boost)

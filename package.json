@@ -1,5 +1,11 @@
 {
   "name": "node-libjq",
+  "version": "0.1.0",
+  "author": "cumul <gg6123@naver.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/g6123/node-libjq.git"
+  },
   "types": "./dist/addon.d.ts",
   "main": "./dist/addon.js",
   "exports": {
@@ -10,12 +16,27 @@
     },
     "./package.json": "./package.json"
   },
+  "files": [
+    "./dist/**/*.js",
+    "./dist/**/*.mjs",
+    "./dist/**/*.d.ts",
+    "./dist/**/*.map"
+  ],
   "scripts": {
-    "build": "pnpm run build:addon && pnpm run build:dist",
-    "build:addon": "cmake-js build",
+    "install": "prebuild-install -r napi || cmake-js compile",
+    "build": "concurrently \"pnpm:build:*\"",
+    "build:addon": "cmake-js compile",
     "build:dist": "nanobundle build",
     "dev": "tsx src/addon.ts",
-    "test": "glob -c \"node --loader tsx --test\" src/**/*.spec.ts"
+    "test": "glob -c \"node --loader tsx --test\" src/**/*.spec.ts",
+    "prebuild": "prebuild --backend cmake-js -r napi --strip",
+    "upload": "prebuild -r napi --upload ${GITHUB_TOKEN}"
+  },
+  "dependencies": {
+    "bindings": "^1.5.0",
+    "cmake-js": "^7.2.1",
+    "node-addon-api": "*",
+    "prebuild-install": "^7.1.1"
   },
   "devDependencies": {
     "@tsconfig/node18": "^2.0.1",
@@ -23,6 +44,7 @@
     "@types/node": "^18",
     "@typescript-eslint/eslint-plugin": "^5.59.9",
     "@typescript-eslint/parser": "^5.59.9",
+    "concurrently": "^8.2.0",
     "eslint": "^8.42.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
@@ -31,13 +53,14 @@
     "eslint-plugin-simple-import-sort": "^10.0.0",
     "glob": "^10.2.7",
     "nanobundle": "^1.6.0",
+    "prebuild": "^11.0.4",
     "prettier": "^2.8.8",
     "tsx": "^3.12.7",
     "typescript": "^5.1.3"
   },
-  "dependencies": {
-    "bindings": "^1.5.0",
-    "cmake-js": "^7.2.1",
-    "node-addon-api": "^6.1.0"
+  "binary": {
+    "napi_versions": [
+      4
+    ]
   }
 }
