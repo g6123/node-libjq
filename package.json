@@ -14,7 +14,8 @@
     "build": "pnpm run build:addon && pnpm run build:dist",
     "build:addon": "cmake-js build",
     "build:dist": "nanobundle build",
-    "dev": "tsx src/addon.ts"
+    "dev": "tsx src/addon.ts",
+    "test": "glob -c \"node --loader tsx --test\" src/**/*.spec.ts"
   },
   "devDependencies": {
     "@tsconfig/node18": "^2.0.1",
@@ -28,6 +29,7 @@
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-simple-import-sort": "^10.0.0",
+    "glob": "^10.2.7",
     "nanobundle": "^1.6.0",
     "prettier": "^2.8.8",
     "tsx": "^3.12.7",

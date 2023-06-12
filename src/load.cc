@@ -43,12 +43,14 @@ jv NodeJQ::LoadNumber(const Napi::Number &source) { return jv_number(source); }
 jv NodeJQ::LoadBoolean(const Napi::Boolean &source) { return jv_bool(source); }
 
 jv NodeJQ::LoadArray(const Napi::Array &source) {
-  jv target = jv_array_sized(source.Length());
+  jv target = jv_array();
 
   for (auto [key, lvalue] : source) {
     int index = key.ToNumber().Int64Value();
     auto value = static_cast<Napi::Value>(lvalue);
-    jv_array_set(target, index, value.IsUndefined() ? jv_null() : Load(value));
+
+    target = jv_array_set(target, index,
+                          value.IsUndefined() ? jv_null() : Load(value));
   }
 
   return target;
@@ -64,7 +66,7 @@ jv NodeJQ::LoadObject(const Napi::Object &source) {
       continue;
     }
 
-    jv_object_set(target, Load(key), Load(value));
+    target = jv_object_set(target, Load(key), Load(value));
   }
 
   return target;

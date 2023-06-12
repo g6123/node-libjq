@@ -100,7 +100,13 @@
     "variant": "cpp",
     "vector": "cpp",
     "builtin.h": "c",
-    "list": "cpp"
+    "list": "cpp",
+    "deque": "cpp",
+    "__memory": "cpp",
+    "filesystem": "cpp",
+    "random": "cpp",
+    "scoped_allocator": "cpp",
+    "*.ipp": "cpp"
   },
   "files.exclude": {
     "**/node_modules/": true
