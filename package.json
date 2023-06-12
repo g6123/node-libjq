@@ -2,6 +2,7 @@
   "name": "libjq",
   "version": "0.1.0",
   "author": "cumul <gg6123@naver.com>",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/g6123/node-libjq.git"
