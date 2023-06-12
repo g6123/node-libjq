@@ -5,9 +5,18 @@
 ## Installation
 
 ```sh
-yarn add node-libjq
-pnpm add node-libjq
-npm install --save node-libjq
+yarn add libjq
+pnpm add libjq
+npm install --save libjq
+```
+
+## Example
+
+```javascript
+import { run } from 'libjq';
+
+console.log(run('.foo', { foo: 'abc' }));
+// abc
 ```
 
 ## Why yet another binding?

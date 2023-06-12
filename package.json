@@ -1,5 +1,5 @@
 {
-  "name": "node-libjq",
+  "name": "libjq",
   "version": "0.1.0",
   "author": "cumul <gg6123@naver.com>",
   "repository": {
@@ -20,7 +20,9 @@
     "./dist/**/*.js",
     "./dist/**/*.mjs",
     "./dist/**/*.d.ts",
-    "./dist/**/*.map"
+    "./src/**.cc",
+    "./src/**.h",
+    "./CMakeLists.txt"
   ],
   "scripts": {
     "prepack": "pnpm run build:dist",
