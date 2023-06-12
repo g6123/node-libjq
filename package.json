@@ -23,6 +23,7 @@
     "./dist/**/*.map"
   ],
   "scripts": {
+    "prepack": "pnpm run build:dist",
     "install": "prebuild-install -r napi || cmake-js compile",
     "build": "concurrently \"pnpm:build:*\"",
     "build:addon": "cmake-js build",
