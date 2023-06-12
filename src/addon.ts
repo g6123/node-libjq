@@ -1,10 +1,11 @@
 import bindings from 'bindings';
-import { inspect } from 'node:util';
 
-const jq = bindings('node-libjq');
+const _ = bindings('node-libjq');
 
-try {
-  console.log(inspect(jq.run('entries[]', { a: 2, b: 'c', date: new Date() })));
-} catch (error) {
-  console.error(inspect(error));
+export interface JQError extends Error {
+  detail: string;
+}
+
+export function run(program: string, input: unknown): unknown {
+  return _.run(program, input);
 }
