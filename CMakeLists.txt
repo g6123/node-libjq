@@ -31,6 +31,8 @@ target_include_directories(${PROJECT_NAME} PRIVATE ${NAPI_INC})
 
 if(APPLE)
   set(jq_CPPFLAGS "-D_REENTRANT")
+elseif(UNIX)
+  set(jq_CPPFLAGS "-fPIC")
 endif()
 
 ExternalProject_Add(jq

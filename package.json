@@ -25,7 +25,7 @@
   "scripts": {
     "install": "prebuild-install -r napi || cmake-js compile",
     "build": "concurrently \"pnpm:build:*\"",
-    "build:addon": "cmake-js compile",
+    "build:addon": "cmake-js build",
     "build:dist": "nanobundle build",
     "dev": "tsx src/addon.ts",
     "test": "glob -c \"node --loader tsx --test\" src/**/*.spec.ts",
