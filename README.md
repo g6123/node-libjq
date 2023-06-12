@@ -19,6 +19,20 @@ console.log(run('.foo', { foo: 'abc' }));
 // abc
 ```
 
+## Notes
+
+Tested in:
+
+- Node v18+
+- macOS and Linux
+
+(Windows support has not been tested. It won't be that difficult though.)
+
+## Development
+
+- CMake v3.25+
+- Dependencies for building jq: automake, autotools-dev, libtools
+
 ## Why yet another binding?
 
 [node-jq](https://github.com/sanack/node-jq) spawns new jq process for every function call, which is not optimal in performance and sometimes comes with an unstable result parsing.
