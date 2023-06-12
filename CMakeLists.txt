@@ -60,6 +60,20 @@ set_target_properties(jq::libonig PROPERTIES
   INTERFACE_INCLUDE_DIRECTORIES ${jq_PREFIX}/include)
 target_link_libraries(${PROJECT_NAME} PRIVATE jq::libonig)
 
+FetchContent_Declare(Boost
+  URL https://boostorg.jfrog.io/artifactory/main/release/1.82.0/source/boost_1_82_0.tar.gz
+  URL_HASH SHA256=66a469b6e608a51f8347236f4912e27dc5c60c60d7d53ae9bfe4683316c6f04c
+  DOWNLOAD_EXTRACT_TIMESTAMP TRUE
+)
+FetchContent_GetProperties(Boost)
+if(NOT Boost_POPULATED)
+  FetchContent_Populate(Boost)
+  set(BOOST_ROOT ${boost_SOURCE_DIR})
+  find_package(Boost 1.82 REQUIRED)
+endif()
+target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES})
+target_include_directories(${PROJECT_NAME} PRIVATE ${Boost_INCLUDE_DIRS})
+
 if(MSVC AND CMAKE_JS_NODELIB_DEF AND CMAKE_JS_NODELIB_TARGET)
   # Generate node.lib
   execute_process(COMMAND ${CMAKE_AR} /def:${CMAKE_JS_NODELIB_DEF} /out:${CMAKE_JS_NODELIB_TARGET} ${CMAKE_STATIC_LINKER_FLAGS})

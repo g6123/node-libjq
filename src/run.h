@@ -10,6 +10,7 @@ extern "C" {
 
 namespace NodeJQ {
 Napi::Value Run(const Napi::CallbackInfo &info);
+
 void HandleError(void *ctx, jv value);
 
 class RunContext {

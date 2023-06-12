@@ -1,14 +1,12 @@
 #include "run.h"
 #include "dump.h"
 #include "load.h"
-#include <iterator>
-#include <sstream>
-#include <string>
+#include <boost/algorithm/string.hpp>
 
 Napi::Value NodeJQ::Run(const Napi::CallbackInfo &info) {
   Napi::Env env = info.Env();
   RunContext context(env);
-  std::string program = info[0].As<Napi::String>();
+  std::string program(info[0].As<Napi::String>());
   Napi::Value input = info[1];
 
   // initialize jq instance
@@ -59,12 +57,9 @@ void NodeJQ::RunContext::HandleError(jv message) {
 Napi::Error NodeJQ::RunContext::NewError(const std::string &message) {
   auto error = Napi::Error::New(env, message);
 
-  std::ostringstream detail;
-  std::copy(messages.begin(), messages.end(),
-            std::ostream_iterator<std::string>(detail, "\n"));
-
-  std::string detailMessage = detail.str();
-  error.Set("detail", detailMessage);
+  std::string detail = boost::algorithm::join(messages, "\n");
+  error.Set("detail", detail);
+  messages.clear();
 
   return error;
 }
