@@ -15,8 +15,8 @@ RUN ./bootstrap \
 
 WORKDIR /app
 
-RUN corepack enable && \
-    corepack prepare pnpm@latest-8 --activate
+RUN corepack enable \
+    && corepack prepare pnpm@latest-8 --activate
 
 COPY pnpm-lock.yaml ./
 RUN pnpm fetch
@@ -25,4 +25,5 @@ COPY package.json tsconfig.json CMakeLists.txt ./
 COPY src src
 RUN pnpm install --ignore-scripts
 
-CMD pnpm run prebuild && pnpm run upload
+CMD pnpm run prebuild \
+    && pnpm run upload
