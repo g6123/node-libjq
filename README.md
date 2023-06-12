@@ -32,6 +32,7 @@ Tested in:
 
 - CMake v3.25+
 - Dependencies for building jq: automake, autotools-dev, libtools
+- [pnpm](https://pnpm.io/)
 
 ## Why yet another binding?
 
